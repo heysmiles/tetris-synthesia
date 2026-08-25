@@ -4,7 +4,7 @@ import {
   COMMIT_Y, COMMIT_ROW_H, BOARD_Y, BOARD_H, KEY_Y, KEYBED_H, BLOCK_COLORS, BLACK_PC,
   ColorId, DRUM_ABBREV, colToDrum,
 } from '../model/constants'
-import { store, strikesAt, soundingAt } from '../model/store'
+import { store, strikesAt } from '../model/store'
 import { SHAPES, shapeCellsAt, Cell } from '../model/shapes'
 import * as engine from '../audio/engine'
 
@@ -347,34 +347,43 @@ function drawBoard(ctx: CanvasRenderingContext2D) {
   ctx.fillRect(0, KEY_Y - 2, CANVAS_W, 2)
 }
 
-// Per-column strike animation state (survives across frames).
-const strikeStart = new Map<number, number>()
-const wasSounding = new Set<number>()
+// Per-column burst animation state (survives across frames). The burst fires
+// when a block's LAST row lands — the end of the waterfall — not on first hit.
+const burstAt = new Map<number, { t: number; color: ColorId }>()
+const wasLastStep = new Set<number>()
 
 function drawKeyboard(ctx: CanvasRenderingContext2D, keyFlash: Map<number, number>) {
   const st = store.state
   const now = performance.now()
   const showDrumLabels = st.creator.color === 'yellow'
-  const freshStrikes: number[] = [] // columns struck within the last ~160ms
 
   for (let c = 0; c < COLS; c++) {
     const black = BLACK_PC.has(c % 12)
     const x = c * CELL
 
-    // sounding? which color?
+    // sounding? which color? is this the final step of the block?
     let sounding: ColorId | null = null
+    let lastStep = false
     const col = st.columns[c]
     if (col.active && st.playing) {
+      const period = STEPS / col.rate
       for (const note of col.notes) {
-        if (soundingAt(note, col.rate, st.step)) { sounding = note.color; break }
+        const since = ((st.step - note.start) % period + period) % period
+        if (since < note.dur) {
+          sounding = note.color
+          if (since === note.dur - 1) lastStep = true
+          break
+        }
       }
     }
-    if ((keyFlash.get(c) ?? 0) > now && !sounding) sounding = st.creator.color
+    if ((keyFlash.get(c) ?? 0) > now && !sounding) {
+      sounding = st.creator.color
+      lastStep = true // audition clicks are one-shots: burst right away
+    }
 
-    // detect the strike moment so the burst animates once per hit
-    if (sounding && !wasSounding.has(c)) strikeStart.set(c, now)
-    if (sounding) wasSounding.add(c)
-    else wasSounding.delete(c)
+    if (lastStep && sounding && !wasLastStep.has(c)) burstAt.set(c, { t: now, color: sounding })
+    if (lastStep) wasLastStep.add(c)
+    else wasLastStep.delete(c)
 
     // key body — chunky 8-bit piano; a sounding key sinks 3px
     const press = sounding ? 3 : 0
@@ -404,14 +413,16 @@ function drawKeyboard(ctx: CanvasRenderingContext2D, keyFlash: Map<number, numbe
     ctx.lineWidth = 1
     ctx.strokeRect(x + 0.5, KEY_Y + 0.5, CELL - 1, KEYBED_H - 1)
 
-    // strike burst in the note's own color: three chunky 8-bit frames,
-    // square sparks that hop upward and outward, then vanish (no alpha fades)
-    const t0 = strikeStart.get(c)
-    if (sounding && t0 !== undefined && now - t0 < 160) freshStrikes.push(c)
-    if (sounding && t0 !== undefined) {
-      const t = (now - t0) / 300
-      if (t < 1) {
-        const pal = BLOCK_COLORS[sounding]
+    // end-of-sequence burst in the note's own color: three chunky 8-bit
+    // frames, square sparks that hop upward and outward, then vanish. It
+    // keeps playing even after the note releases (gated only on its timer).
+    const burst = burstAt.get(c)
+    if (burst) {
+      const t = (now - burst.t) / 300
+      if (t >= 1) {
+        burstAt.delete(c)
+      } else {
+        const pal = BLOCK_COLORS[burst.color]
         const frame = Math.min(2, Math.floor(t * 3))
         const rise = [3, 9, 15][frame]
         const spread = [3, 6, 9][frame]
@@ -440,20 +451,6 @@ function drawKeyboard(ctx: CanvasRenderingContext2D, keyFlash: Map<number, numbe
     }
   }
 
-  // chord shine: when a line of blocks lands on 2+ keys at once, each hit
-  // gets an extra white Synthesia-style starburst so chords read brighter
-  if (freshStrikes.length >= 2) {
-    ctx.fillStyle = '#ffffff'
-    for (const c of freshStrikes) {
-      const cx = c * CELL + CELL / 2
-      ctx.fillRect(cx - 2, KEY_Y - 9, 4, 4) // core
-      ctx.fillRect(cx - 1, KEY_Y - 15, 2, 4) // up ray
-      ctx.fillRect(cx - 1, KEY_Y - 3, 2, 3) // down ray onto the key
-      ctx.fillRect(cx - 9, KEY_Y - 8, 5, 2) // left ray
-      ctx.fillRect(cx + 4, KEY_Y - 8, 5, 2) // right ray
-      ctx.fillRect(c * CELL + 3, KEY_Y + 4, CELL - 6, 2) // gleam on the keytop
-    }
-  }
 }
 
 // Classic NES block cell: fill, dark bevel bottom/right, white glint top-left.
