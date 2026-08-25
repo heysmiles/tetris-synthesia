@@ -1,0 +1,266 @@
+/* ---- TETRIS SYNTHESIA — NES-flavored chrome ---- */
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+:root {
+  --grey: #9c9c9c;
+  --grey-dark: #5c5c5c;
+  --grey-lite: #d4d4d4;
+  --panel-bg: #000000;
+  --accent: #f8b800;
+}
+
+html, body, #root, .app {
+  height: 100%;
+}
+
+body {
+  background: #05050d;
+  font-family: 'Press Start 2P', monospace;
+  color: #fff;
+  image-rendering: pixelated;
+  overflow-x: hidden;
+}
+
+/* Starfield tile — same space vibe as the title screen */
+.app {
+  background-color: #05050d;
+  background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="120" height="120"><rect width="120" height="120" fill="%2305050d"/><g fill="%2335e8c8"><rect x="22" y="12" width="2" height="8"/><rect x="19" y="15" width="8" height="2"/><rect x="88" y="72" width="2" height="8"/><rect x="85" y="75" width="8" height="2"/></g><g fill="%236858a8"><rect x="58" y="34" width="3" height="3"/><rect x="12" y="86" width="3" height="3"/><rect x="102" y="20" width="3" height="3"/><rect x="44" y="104" width="2" height="2"/></g><g fill="%23ffffff" opacity="0.55"><rect x="72" y="8" width="2" height="2"/><rect x="34" y="58" width="2" height="2"/><rect x="98" y="102" width="2" height="2"/><rect x="8" y="42" width="2" height="2"/></g></svg>');
+  background-size: 120px 120px;
+  min-height: 100%;
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+}
+
+/* ---- panels ---- */
+
+.panel {
+  background: var(--panel-bg);
+  border: 3px solid var(--grey-lite);
+  outline: 3px solid #6858a8;
+  border-radius: 4px;
+  padding: 14px 12px;
+  margin-bottom: 14px;
+  font-size: 11px;
+  line-height: 1.7;
+}
+
+.panel-label { color: #fff; font-size: 11px; letter-spacing: 1px; }
+.panel-value { color: #fff; font-size: 13px; margin-top: 4px; }
+
+.mode-panel { text-align: center; font-size: 12px; padding: 14px 8px; }
+
+.title-input {
+  display: block;
+  width: 100%;
+  text-align: center;
+  font-family: 'Press Start 2P', monospace;
+  font-size: 14px;
+  color: #fff;
+  background: var(--panel-bg);
+  border: 3px solid var(--grey-lite);
+  outline: 3px solid #6858a8;
+  border-radius: 4px;
+  padding: 12px 8px;
+  margin-bottom: 10px;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+}
+.title-input::placeholder { color: #4a4a6a; }
+.title-input:focus { border-color: var(--accent); }
+
+.stat-row {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin-top: 8px;
+}
+.stat-chip {
+  width: 12px; height: 12px;
+  display: inline-block;
+  border: 2px solid #000;
+  box-shadow: inset 2px 2px 0 rgba(255,255,255,.6);
+}
+.stat-name { font-size: 9px; flex: 1; color: #ccc; }
+.stat-count { font-size: 10px; color: #c05858; }
+
+/* ---- next / creator ---- */
+
+.next-grid { position: relative; margin: 10px auto 6px; }
+.next-cell {
+  position: absolute;
+  width: 16px; height: 16px;
+  border: 2px solid;
+  box-shadow: inset 3px 3px 0 rgba(255,255,255,.55);
+}
+
+.shape-buttons {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+  margin-top: 10px;
+}
+
+.pix-btn {
+  font-family: 'Press Start 2P', monospace;
+  font-size: 9px;
+  color: #fff;
+  background: #2c2c2c;
+  border: 2px solid var(--grey-lite);
+  border-radius: 2px;
+  padding: 6px 7px;
+  cursor: pointer;
+}
+.pix-btn:hover { background: #4a4a4a; }
+.pix-btn.on { background: #b02020; border-color: #fff; }
+.pix-btn.wide { display: block; width: 100%; margin-top: 8px; text-align: center; }
+.pix-btn.danger:hover { background: #7c1000; }
+.color-btn { width: 24px; height: 24px; padding: 0; }
+.color-btn.on { outline: 3px solid #fff; }
+
+.hint { font-size: 8px; color: #666; margin-top: 8px; text-align: center; line-height: 1.8; }
+.keys-hint { color: #6858a8; margin-top: 10px; }
+
+.mixer-row { display: flex; align-items: center; gap: 6px; margin-top: 10px; }
+.mixer-row input[type='range'] { flex: 1; accent-color: #b02020; height: 14px; }
+
+/* ---- game layout ---- */
+
+.game-frame { padding: 16px 16px 8px; width: 100%; display: flex; justify-content: center; }
+
+.game-grid {
+  display: grid;
+  grid-template-columns: 225px minmax(0, 680px) 225px;
+  gap: 18px;
+  align-items: start;
+  width: 100%;
+  max-width: 1200px;
+}
+
+.side-col { display: flex; flex-direction: column; }
+
+.board-frame {
+  background: var(--panel-bg);
+  border: 4px solid var(--grey-lite);
+  outline: 3px solid #6858a8;
+  border-radius: 4px;
+  padding: 6px;
+  display: flex;
+  justify-content: center;
+}
+
+/* Scale to fit the viewport height so the piano is never off-screen:
+   the canvas keeps its aspect ratio and shrinks to whichever constraint
+   (column width or viewport height) is tighter. */
+.seq-canvas {
+  display: block;
+  width: auto;
+  height: auto;
+  max-width: 100%;
+  max-height: calc(100vh - 150px);
+  image-rendering: pixelated;
+  cursor: crosshair;
+}
+
+@media (max-width: 1080px) {
+  .game-grid { grid-template-columns: 1fr; max-width: 700px; }
+  .side-col { flex-direction: row; flex-wrap: wrap; gap: 10px; }
+  .side-col .panel { flex: 1 1 150px; }
+}
+
+/* ---- title screen ---- */
+
+.title-screen {
+  position: relative;
+  width: 100%;
+  min-height: 100vh;
+  background: #05050d;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 28px;
+  overflow: hidden;
+}
+
+.star {
+  position: absolute;
+  color: #35e8c8;
+  font-size: 12px;
+  animation: twinkle 2.4s infinite;
+}
+@keyframes twinkle {
+  0%, 100% { opacity: .25; }
+  50% { opacity: 1; }
+}
+
+.logo-box {
+  border: 4px solid #b8a8e8;
+  outline: 4px solid #6858a8;
+  background: #0a0a14;
+  padding: 26px 38px 22px;
+  text-align: center;
+  box-shadow: 0 0 0 8px #05050d, 0 12px 0 #6858a8;
+}
+.logo-box.small { padding: 18px 30px; }
+
+.logo-main {
+  font-size: 52px;
+  color: #f0f0f0;
+  text-shadow:
+    4px 4px 0 #a01850,
+    8px 8px 0 #b8a8e8,
+    0 -6px 0 #a01850;
+  letter-spacing: 6px;
+}
+
+.logo-sub {
+  margin-top: 18px;
+  font-size: 20px;
+  color: #b8a8e8;
+  text-shadow: 3px 3px 0 #a01850;
+  letter-spacing: 12px;
+}
+
+.title-tagline { font-size: 9px; color: #6858a8; letter-spacing: 2px; }
+
+.title-menu {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  align-items: center;
+}
+
+.menu-item {
+  font-size: 16px;
+  color: #d0d0d0;
+  cursor: pointer;
+  letter-spacing: 3px;
+  display: flex;
+  gap: 14px;
+  align-items: center;
+}
+.menu-item.sel { color: #ffffff; }
+.menu-item .arrow {
+  color: #d048a8;
+  width: 18px;
+  display: inline-block;
+  animation: blink 0.8s steps(2) infinite;
+}
+@keyframes blink { 50% { opacity: 0; } }
+
+.title-foot {
+  position: absolute;
+  bottom: 16px;
+  font-size: 7px;
+  color: #3a3a5a;
+  letter-spacing: 1px;
+}
+
+.credits-body {
+  text-align: center;
+  font-size: 10px;
+  line-height: 2.6;
+  color: #b8a8e8;
+}
