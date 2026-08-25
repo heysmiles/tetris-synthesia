@@ -54,3 +54,28 @@ export const KOROBEINIKI: Preset = {
     { color: 'yellow', cells: [{ c: 17, r: 9 }] },
   ],
 }
+
+// CITY OF DREAMS — an original composition in a dreamy, wistful, late-night
+// jazz mood (think movie-musical piano balladry). No drums. Two-chord wash:
+// Am7 for the first half of the bar, Fmaj7 for the second, under a sparse
+// leaning piano line that resolves and loops.
+// Columns: F3=5, A3=9, C4=12, D4=14, E4=16, G4=19, A4=21.
+export const CITY_OF_DREAMS: Preset = {
+  name: 'CITY OF DREAMS',
+  bpm: 70,
+  rates: {},
+  shapes: [
+    // ---- pads (green): Am7 -> Fmaj7 wash ----
+    { color: 'green', cells: Array.from({ length: 16 }, (_, r) => ({ c: 9, r })) }, // A3 drone, whole bar
+    { color: 'green', cells: Array.from({ length: 8 }, (_, i) => ({ c: 12, r: 8 + i })) }, // C4, steps 0-7
+    { color: 'green', cells: Array.from({ length: 8 }, (_, i) => ({ c: 5, r: i })) }, // F3, steps 8-15
+    // ---- piano (red): sparse, leaning melody ----
+    { color: 'red', cells: [{ c: 16, r: 14 }, { c: 16, r: 15 }] }, // E4, step 0 (held)
+    { color: 'red', cells: [{ c: 19, r: 12 }] }, // G4, step 3
+    { color: 'red', cells: [{ c: 21, r: 9 }, { c: 21, r: 10 }, { c: 21, r: 11 }] }, // A4, step 4 (long lean)
+    { color: 'red', cells: [{ c: 19, r: 7 }] }, // G4, step 8
+    { color: 'red', cells: [{ c: 16, r: 5 }, { c: 16, r: 6 }] }, // E4, step 9 (held)
+    { color: 'red', cells: [{ c: 14, r: 2 }, { c: 14, r: 3 }] }, // D4, step 12 (held)
+    { color: 'red', cells: [{ c: 12, r: 0 }, { c: 12, r: 1 }] }, // C4, step 14 — resolves, loops
+  ],
+}
