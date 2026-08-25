@@ -146,7 +146,15 @@ body {
 
 /* ---- game layout ---- */
 
-.game-frame { padding: 16px 16px 8px; width: 100%; display: flex; justify-content: center; }
+.game-frame {
+  padding: 16px 16px 8px;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  /* the chrome is designed at ~90% of its natural size — this makes 100%
+     browser zoom match that look and keeps everything on one screen */
+  zoom: 0.9;
+}
 
 .game-grid {
   display: grid;
@@ -157,11 +165,13 @@ body {
   max-width: 1200px;
 }
 
-/* Panels spread so the last one lands at the keyboard's bottom edge */
+/* Panels spread so the last one lands at the keyboard's bottom edge;
+   gap is the minimum spacing so boxes never collide on short viewports */
 .side-col {
   display: flex;
   flex-direction: column;
   justify-content: space-between;
+  gap: 12px;
   height: 100%;
 }
 .side-col .panel, .side-col .main-btn { margin-bottom: 0; }
@@ -182,8 +192,9 @@ body {
 .seq-canvas {
   display: block;
   /* fill the column, upscaling on big screens, but never taller than the
-     viewport allows; 0.8856 = canvas aspect ratio (650/734) */
-  width: min(100%, calc((100vh - 160px) * 0.8856));
+     viewport allows; 0.8856 = canvas aspect ratio (650/734); the /0.9
+     compensates for the game-frame zoom, which does not rescale vh units */
+  width: min(100%, calc((100vh / 0.9 - 160px) * 0.8856));
   height: auto;
   image-rendering: pixelated;
   cursor: crosshair;
