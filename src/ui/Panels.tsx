@@ -4,7 +4,7 @@ import {
 } from '../model/constants'
 import { store } from '../model/store'
 import { SHAPES, shapeCellsAt } from '../model/shapes'
-import { KOROBEINIKI, CITY_OF_DREAMS, NIGHT_SWIM } from '../model/presets'
+import { KOROBEINIKI, CITY_OF_DREAMS, CANON_IN_D } from '../model/presets'
 import * as engine from '../audio/engine'
 
 const pad = (n: number, w: number) => String(Math.min(n, 10 ** w - 1)).padStart(w, '0')
@@ -200,7 +200,7 @@ export function TransportPanel({ playing }: { playing: boolean }) {
 const PRESETS = [
   { label: 'TETRIS THEME', preset: KOROBEINIKI },
   { label: 'CITY OF DREAMS', preset: CITY_OF_DREAMS },
-  { label: 'NIGHT SWIM', preset: NIGHT_SWIM },
+  { label: 'CANON IN D', preset: CANON_IN_D },
 ]
 
 export function PresetsPanel() {

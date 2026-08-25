@@ -63,8 +63,16 @@ export const KOROBEINIKI: Preset = {
 export const CITY_OF_DREAMS: Preset = {
   name: 'CITY OF DREAMS',
   bpm: 70,
-  rates: {},
+  rates: {
+    11: 2, // shaker on the offbeat eighths
+  },
   shapes: [
+    // ---- drums (yellow): soft late-night kit ----
+    { color: 'yellow', cells: [{ c: 0, r: 15 }] }, // kick, step 0
+    { color: 'yellow', cells: [{ c: 0, r: 5 }] }, // kick, step 10 (lazy)
+    { color: 'yellow', cells: [{ c: 2, r: 7 }] }, // rim, step 8 (soft backbeat)
+    { color: 'yellow', cells: [{ c: 11, r: 13 }] }, // shaker (rate x2 -> 2,6,10,14)
+    { color: 'yellow', cells: [{ c: 11, r: 9 }] },
     // ---- pads (green): Am7 -> Fmaj7 wash ----
     { color: 'green', cells: Array.from({ length: 16 }, (_, r) => ({ c: 9, r })) }, // A3 drone, whole bar
     { color: 'green', cells: Array.from({ length: 8 }, (_, i) => ({ c: 12, r: 8 + i })) }, // C4, steps 0-7
@@ -80,40 +88,33 @@ export const CITY_OF_DREAMS: Preset = {
   ],
 }
 
-// NIGHT SWIM — original. A slow, hazy neo-soul loop: Fmaj7 drifting to Em7
-// under lazy Rhodes-style piano stabs, a sparse falsetto-register synth
-// line, and a minimal laid-back beat. 65 BPM, lots of air between notes.
-// Columns: E3=4, F3=5, G3=7, A3=9, B3=11, C4=12, D4=14, E4=16, G4=19, A4=21.
-export const NIGHT_SWIM: Preset = {
-  name: 'NIGHT SWIM',
-  bpm: 65,
-  rates: {
-    17: 2, // closed hats on the offbeat eighths
-  },
+// CANON IN D — Pachelbel (public domain). The most famous loop in classical
+// music: the eight-chord ground bass cycles on piano (transposed up an
+// octave to fit the board) while the pads play the first violin's sustained
+// entry above it. One chord per 2 steps; the whole bar IS the canon's loop.
+// Columns: D3=2, F#3=6, G3=7, A3=9, B3=11, C#4=13, D4=14, E4=16, F#4=18.
+export const CANON_IN_D: Preset = {
+  name: 'CANON IN D',
+  bpm: 60,
+  rates: {},
   shapes: [
-    // ---- pads (green): full Fmaj7 -> Em7 chords, four voices each ----
-    { color: 'green', cells: Array.from({ length: 8 }, (_, i) => ({ c: 5, r: 8 + i })) }, // F3 } Fmaj7,
-    { color: 'green', cells: Array.from({ length: 8 }, (_, i) => ({ c: 9, r: 8 + i })) }, // A3 } steps
-    { color: 'green', cells: Array.from({ length: 8 }, (_, i) => ({ c: 12, r: 8 + i })) }, // C4 } 0-7
-    { color: 'green', cells: Array.from({ length: 8 }, (_, i) => ({ c: 16, r: 8 + i })) }, // E4 }
-    { color: 'green', cells: Array.from({ length: 8 }, (_, i) => ({ c: 4, r: i })) }, // E3 } Em7,
-    { color: 'green', cells: Array.from({ length: 8 }, (_, i) => ({ c: 7, r: i })) }, // G3 } steps
-    { color: 'green', cells: Array.from({ length: 8 }, (_, i) => ({ c: 11, r: i })) }, // B3 } 8-15
-    { color: 'green', cells: Array.from({ length: 8 }, (_, i) => ({ c: 14, r: i })) }, // D4 }
-    // ---- piano (red): one gentle descending line with 9th colors ----
-    { color: 'red', cells: [{ c: 19, r: 11 }, { c: 19, r: 12 }] }, // G4, step 3 (9th over F, held)
-    { color: 'red', cells: [{ c: 21, r: 9 }] }, // A4, step 6 (3rd, pushes to Em)
-    { color: 'red', cells: [{ c: 19, r: 7 }] }, // G4, step 8 (lands with the snare)
-    { color: 'red', cells: [{ c: 18, r: 4 }, { c: 18, r: 5 }] }, // F#4, step 10 (9th over Em, held)
-    { color: 'red', cells: [{ c: 16, r: 1 }, { c: 16, r: 2 }] }, // E4, step 13 (rests home)
-    // ---- synth (blue): one held note, way back in the mix ----
-    { color: 'blue', cells: [{ c: 23, r: 1 }, { c: 23, r: 2 }, { c: 23, r: 3 }] }, // B4, step 12
-    // ---- drums (yellow): minimal and behind the beat ----
-    { color: 'yellow', cells: [{ c: 0, r: 15 }] }, // kick, step 0
-    { color: 'yellow', cells: [{ c: 0, r: 5 }] }, // kick, step 10 (lazy second hit)
-    { color: 'yellow', cells: [{ c: 1, r: 7 }] }, // snare, step 8 (backbeat)
-    { color: 'yellow', cells: [{ c: 2, r: 2 }] }, // rim ghost, step 13
-    { color: 'yellow', cells: [{ c: 17, r: 13 }] }, // closed hat (rate x2 -> 2,6,10,14)
-    { color: 'yellow', cells: [{ c: 17, r: 9 }] },
+    // ---- piano (red): the ground bass — D A B F# G D G A ----
+    { color: 'red', cells: [{ c: 2, r: 14 }, { c: 2, r: 15 }] }, // D3  step 0
+    { color: 'red', cells: [{ c: 9, r: 12 }, { c: 9, r: 13 }] }, // A3  step 2
+    { color: 'red', cells: [{ c: 11, r: 10 }, { c: 11, r: 11 }] }, // B3  step 4
+    { color: 'red', cells: [{ c: 6, r: 8 }, { c: 6, r: 9 }] }, // F#3 step 6
+    { color: 'red', cells: [{ c: 7, r: 6 }, { c: 7, r: 7 }] }, // G3  step 8
+    { color: 'red', cells: [{ c: 2, r: 4 }, { c: 2, r: 5 }] }, // D3  step 10
+    { color: 'red', cells: [{ c: 7, r: 2 }, { c: 7, r: 3 }] }, // G3  step 12
+    { color: 'red', cells: [{ c: 9, r: 0 }, { c: 9, r: 1 }] }, // A3  step 14
+    // ---- pads (green): the first violin entry — F# E D C# B A B C# ----
+    { color: 'green', cells: [{ c: 18, r: 14 }, { c: 18, r: 15 }] }, // F#4 step 0
+    { color: 'green', cells: [{ c: 16, r: 12 }, { c: 16, r: 13 }] }, // E4  step 2
+    { color: 'green', cells: [{ c: 14, r: 10 }, { c: 14, r: 11 }] }, // D4  step 4
+    { color: 'green', cells: [{ c: 13, r: 8 }, { c: 13, r: 9 }] }, // C#4 step 6
+    { color: 'green', cells: [{ c: 11, r: 6 }, { c: 11, r: 7 }] }, // B3  step 8
+    { color: 'green', cells: [{ c: 9, r: 4 }, { c: 9, r: 5 }] }, // A3  step 10
+    { color: 'green', cells: [{ c: 11, r: 2 }, { c: 11, r: 3 }] }, // B3  step 12
+    { color: 'green', cells: [{ c: 13, r: 0 }, { c: 13, r: 1 }] }, // C#4 step 14
   ],
 }
