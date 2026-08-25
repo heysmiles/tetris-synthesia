@@ -88,33 +88,32 @@ export const CITY_OF_DREAMS: Preset = {
   ],
 }
 
-// CANON IN D — Pachelbel (public domain). The most famous loop in classical
-// music: the eight-chord ground bass cycles on piano (transposed up an
-// octave to fit the board) while the pads play the first violin's sustained
-// entry above it. One chord per 2 steps; the whole bar IS the canon's loop.
-// Columns: D3=2, F#3=6, G3=7, A3=9, B3=11, C#4=13, D4=14, E4=16, F#4=18.
-export const CANON_IN_D: Preset = {
-  name: 'CANON IN D',
-  bpm: 60,
+// BACH PRELUDE — Prelude in C major, WTC Book I (public domain). Each bar of
+// the original is a repeating 16-sixteenth broken-chord figure — the piece
+// is literally built like a step sequencer, so one bar loops seamlessly.
+// The C major bar, down an octave to fit the board: C E G C' E' G C' E',
+// twice. Solo piano, constant sixteenth motion, no seam at the loop point.
+// Columns: C3=0, E3=4, G3=7, C4=12, E4=16. Row = 15 - step, all dur 1.
+export const BACH_PRELUDE: Preset = {
+  name: 'BACH PRELUDE',
+  bpm: 66,
   rates: {},
   shapes: [
-    // ---- piano (red): the ground bass — D A B F# G D G A ----
-    { color: 'red', cells: [{ c: 2, r: 14 }, { c: 2, r: 15 }] }, // D3  step 0
-    { color: 'red', cells: [{ c: 9, r: 12 }, { c: 9, r: 13 }] }, // A3  step 2
-    { color: 'red', cells: [{ c: 11, r: 10 }, { c: 11, r: 11 }] }, // B3  step 4
-    { color: 'red', cells: [{ c: 6, r: 8 }, { c: 6, r: 9 }] }, // F#3 step 6
-    { color: 'red', cells: [{ c: 7, r: 6 }, { c: 7, r: 7 }] }, // G3  step 8
-    { color: 'red', cells: [{ c: 2, r: 4 }, { c: 2, r: 5 }] }, // D3  step 10
-    { color: 'red', cells: [{ c: 7, r: 2 }, { c: 7, r: 3 }] }, // G3  step 12
-    { color: 'red', cells: [{ c: 9, r: 0 }, { c: 9, r: 1 }] }, // A3  step 14
-    // ---- pads (green): the first violin entry — F# E D C# B A B C# ----
-    { color: 'green', cells: [{ c: 18, r: 14 }, { c: 18, r: 15 }] }, // F#4 step 0
-    { color: 'green', cells: [{ c: 16, r: 12 }, { c: 16, r: 13 }] }, // E4  step 2
-    { color: 'green', cells: [{ c: 14, r: 10 }, { c: 14, r: 11 }] }, // D4  step 4
-    { color: 'green', cells: [{ c: 13, r: 8 }, { c: 13, r: 9 }] }, // C#4 step 6
-    { color: 'green', cells: [{ c: 11, r: 6 }, { c: 11, r: 7 }] }, // B3  step 8
-    { color: 'green', cells: [{ c: 9, r: 4 }, { c: 9, r: 5 }] }, // A3  step 10
-    { color: 'green', cells: [{ c: 11, r: 2 }, { c: 11, r: 3 }] }, // B3  step 12
-    { color: 'green', cells: [{ c: 13, r: 0 }, { c: 13, r: 1 }] }, // C#4 step 14
+    { color: 'red', cells: [{ c: 0, r: 15 }] }, // C3  step 0
+    { color: 'red', cells: [{ c: 4, r: 14 }] }, // E3  step 1
+    { color: 'red', cells: [{ c: 7, r: 13 }] }, // G3  step 2
+    { color: 'red', cells: [{ c: 12, r: 12 }] }, // C4  step 3
+    { color: 'red', cells: [{ c: 16, r: 11 }] }, // E4  step 4
+    { color: 'red', cells: [{ c: 7, r: 10 }] }, // G3  step 5
+    { color: 'red', cells: [{ c: 12, r: 9 }] }, // C4  step 6
+    { color: 'red', cells: [{ c: 16, r: 8 }] }, // E4  step 7
+    { color: 'red', cells: [{ c: 0, r: 7 }] }, // C3  step 8 — figure repeats
+    { color: 'red', cells: [{ c: 4, r: 6 }] }, // E3  step 9
+    { color: 'red', cells: [{ c: 7, r: 5 }] }, // G3  step 10
+    { color: 'red', cells: [{ c: 12, r: 4 }] }, // C4  step 11
+    { color: 'red', cells: [{ c: 16, r: 3 }] }, // E4  step 12
+    { color: 'red', cells: [{ c: 7, r: 2 }] }, // G3  step 13
+    { color: 'red', cells: [{ c: 12, r: 1 }] }, // C4  step 14
+    { color: 'red', cells: [{ c: 16, r: 0 }] }, // E4  step 15
   ],
 }
