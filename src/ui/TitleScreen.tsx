@@ -78,6 +78,15 @@ export function TitleScreen() {
 }
 
 export function CreditsScreen() {
+  useEffect(() => {
+    const onKey = (e: KeyboardEvent) => {
+      if (store.state.screen !== 'credits') return
+      if (e.key === 'Enter' || e.key === 'Escape' || e.key === ' ') store.setScreen('title')
+    }
+    window.addEventListener('keydown', onKey)
+    return () => window.removeEventListener('keydown', onKey)
+  }, [])
+
   return (
     <div className="title-screen">
       <div className="logo-box small">

@@ -183,7 +183,7 @@ export function TransportPanel({ playing }: { playing: boolean }) {
         {playing ? '❚❚ PAUSE' : '▶ PLAY'}
       </button>
       <button className="pix-btn wide" onClick={() => store.commitAllStaged()}>
-        ✓ COMMIT
+        COMMIT EDITS
       </button>
       <button className="pix-btn wide" onClick={onExport}>SAVE</button>
       <button className="pix-btn wide" onClick={() => fileRef.current?.click()}>LOAD</button>
