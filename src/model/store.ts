@@ -328,6 +328,30 @@ class Store {
     this.state.selectedShapeId = null
     this.emit()
   }
+
+  // Replace the whole session with a bundled preset: stage its shapes, set
+  // per-column rates, then commit everything so it joins the loop compiled
+  // by the same code path as hand-placed blocks.
+  applyPreset(p: {
+    name: string
+    bpm: number
+    rates: Record<number, LoopRate>
+    shapes: { color: ColorId; cells: Cell[] }[]
+  }) {
+    this.state.shapes = p.shapes.map((s) => ({
+      id: this.nextId++,
+      color: s.color,
+      cells: s.cells,
+    }))
+    this.state.columns = freshColumns()
+    for (const [c, rate] of Object.entries(p.rates)) {
+      this.state.columns[Number(c)].rate = rate
+    }
+    this.state.projectName = p.name
+    this.state.bpm = p.bpm
+    this.state.selectedShapeId = null
+    this.commitAllStaged()
+  }
 }
 
 export const store = new Store()

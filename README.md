@@ -55,6 +55,15 @@ labels on the keys. Closed hat chokes open hat.
 
 Sessions autosave to localStorage; SAVE/LOAD exports/imports a JSON loop file.
 
+## Preset: ♪ THEME A
+
+The **♪ THEME A** button loads a bundled arrangement of **Korobeiniki** — the
+public-domain Russian folk melody behind Tetris "Theme A". Its opening phrase
+is exactly 16 eighth notes, mapping 1:1 onto the 16-step loop: blue synth
+melody across five pitch columns, red E3 bass pumping eighths at rate ×4,
+green G3 pad, kick on every beat, backbeat snare, and offbeat closed hats.
+Loading it replaces your current loop (it asks first) — SAVE yours to keep it.
+
 ## Not implemented yet (roadmap)
 
 - 2-bar / 32-step mode

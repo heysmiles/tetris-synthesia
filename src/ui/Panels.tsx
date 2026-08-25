@@ -4,6 +4,7 @@ import {
 } from '../model/constants'
 import { store } from '../model/store'
 import { SHAPES, shapeCellsAt } from '../model/shapes'
+import { KOROBEINIKI } from '../model/presets'
 import * as engine from '../audio/engine'
 
 const pad = (n: number, w: number) => String(Math.min(n, 10 ** w - 1)).padStart(w, '0')
@@ -184,6 +185,17 @@ export function TransportPanel({ playing }: { playing: boolean }) {
       </button>
       <button className="pix-btn wide" onClick={() => store.commitAllStaged()}>
         COMMIT EDITS
+      </button>
+      <button
+        className="pix-btn wide"
+        onClick={() => {
+          if (!confirm('Load the KOROBEINIKI preset? This replaces your current loop (SAVE it first if you want to keep it).')) return
+          engine.unlock()
+          store.applyPreset(KOROBEINIKI)
+          engine.setBpm(store.state.bpm)
+        }}
+      >
+        ♪ THEME A
       </button>
       <button className="pix-btn wide" onClick={onExport}>SAVE</button>
       <button className="pix-btn wide" onClick={() => fileRef.current?.click()}>LOAD</button>
