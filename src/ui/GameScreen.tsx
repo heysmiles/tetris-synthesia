@@ -4,6 +4,7 @@ import {
   ControlsPanel,
 } from './Panels'
 import { store } from '../model/store'
+import * as engine from '../audio/engine'
 
 export function GameScreen() {
   const st = store.state
@@ -11,7 +12,15 @@ export function GameScreen() {
     <div className="game-frame">
       <div className="game-grid">
         <div className="side-col">
-          <div className="panel mode-panel">B-TYPE</div>
+          <button
+            className="panel mode-panel main-btn"
+            onClick={() => {
+              engine.pause()
+              store.setScreen('title')
+            }}
+          >
+            ◀ MAIN
+          </button>
           <StatsPanel stats={st.stats} />
           <MixerPanel volumes={st.volumes} />
           <ControlsPanel />

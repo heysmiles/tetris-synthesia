@@ -320,6 +320,7 @@ function drawBoard(ctx: CanvasRenderingContext2D) {
   for (let c = 0; c < COLS; c++) {
     const col = st.columns[c]
     if (!col.active) continue
+    const period = STEPS / col.rate
     for (const note of col.notes) {
       for (let d = 1; d <= STEPS; d++) {
         if (!strikesAt(note, col.rate, st.step + d)) continue
@@ -329,6 +330,15 @@ function drawBoard(ctx: CanvasRenderingContext2D) {
           if (row < 0 || row > STEPS - 1) continue
           drawNesCell(ctx, c * CELL, BOARD_Y + row * CELL, CELL, CELL, note.color)
         }
+      }
+      // a struck block waterfalls into the key one row per step: the part
+      // that hasn't landed yet keeps sliding down until the last row hits
+      const since = ((st.step - note.start) % period + period) % period
+      const remaining = note.dur - 1 - since
+      for (let k = 0; k < remaining; k++) {
+        const row = STEPS - 1 - k
+        if (row < 0) break
+        drawNesCell(ctx, c * CELL, BOARD_Y + row * CELL, CELL, CELL, note.color)
       }
     }
   }

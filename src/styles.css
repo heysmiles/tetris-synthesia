@@ -51,6 +51,14 @@ body {
 
 .mode-panel { text-align: center; font-size: 12px; padding: 14px 8px; }
 
+.main-btn {
+  font-family: 'Press Start 2P', monospace;
+  color: #fff;
+  width: 100%;
+  cursor: pointer;
+}
+.main-btn:hover { background: #1a1a2e; border-color: var(--accent); }
+
 .title-input {
   display: block;
   width: 100%;
