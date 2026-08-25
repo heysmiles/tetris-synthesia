@@ -33,8 +33,6 @@ const CONTROLS: [string, string][] = [
   ['1-4', 'COLOR'],
   ['ESC', 'DROP CURSOR'],
   ['←↓→', 'MOVE'],
-  ['R-CLICK', 'DELETE'],
-  ['DEL', 'DELETE'],
 ]
 
 export function ControlsPanel() {

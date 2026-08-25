@@ -23,6 +23,7 @@ export function GameScreen() {
           </button>
           <StatsPanel stats={st.stats} />
           <MixerPanel volumes={st.volumes} />
+          <LevelPanel bpm={st.bpm} />
           <ControlsPanel />
         </div>
         <div className="center-col">
@@ -34,7 +35,6 @@ export function GameScreen() {
         <div className="side-col">
           <ScorePanel top={st.top} score={st.score} />
           <NextPanel />
-          <LevelPanel bpm={st.bpm} />
           <TransportPanel playing={st.playing} />
         </div>
       </div>
