@@ -23,7 +23,7 @@ export function GameScreen() {
           </div>
         </div>
         <div className="side-col">
-          <ScorePanel top={st.top} score={st.score} lines={st.lines} />
+          <ScorePanel top={st.top} score={st.score} />
           <NextPanel />
           <LevelPanel bpm={st.bpm} />
           <TransportPanel playing={st.playing} />

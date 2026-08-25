@@ -30,6 +30,7 @@ const CONTROLS: [string, string][] = [
   ['↑', 'ROTATE'],
   ['Q / E', 'SHAPE'],
   ['1-4', 'COLOR'],
+  ['ESC', 'DROP CURSOR'],
   ['←↓→', 'MOVE'],
   ['R-CLICK', 'DELETE'],
   ['DEL', 'DELETE'],
@@ -49,15 +50,13 @@ export function ControlsPanel() {
   )
 }
 
-export function ScorePanel({ top, score, lines }: { top: number; score: number; lines: number }) {
+export function ScorePanel({ top, score }: { top: number; score: number }) {
   return (
     <div className="panel">
       <div className="panel-label">TOP</div>
       <div className="panel-value">{pad(top, 6)}</div>
       <div className="panel-label" style={{ marginTop: 10 }}>SCORE</div>
       <div className="panel-value">{pad(score, 6)}</div>
-      <div className="panel-label" style={{ marginTop: 10 }}>LINES</div>
-      <div className="panel-value">{pad(lines, 3)}</div>
     </div>
   )
 }

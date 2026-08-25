@@ -66,6 +66,9 @@ export function SequencerCanvas() {
           store.commitAllStaged()
           engine.blip(1600)
           break
+        case 'Escape':
+          store.disarmCreator()
+          break
         case 'Delete':
         case 'Backspace':
           if (sel != null) {
@@ -153,7 +156,7 @@ export function SequencerCanvas() {
             store.selectShape(existing.id)
             dragRef.current = { id: existing.id, lastC: h.c, lastR: h.r }
           }
-        } else if (!rightClick) {
+        } else if (!rightClick && store.state.creatorArmed) {
           const { shapeIndex, rot, color } = store.state.creator
           const cells = shapeCellsAt(SHAPES[shapeIndex], rot).map(({ c, r }) => ({
             c: c + h.c,
@@ -183,6 +186,7 @@ export function SequencerCanvas() {
       width={CANVAS_W}
       height={CANVAS_H}
       className="seq-canvas"
+      style={{ cursor: store.state.creatorArmed ? 'crosshair' : 'default' }}
       onMouseMove={onMouseMove}
       onMouseDown={onMouseDown}
       onMouseUp={onMouseUp}
@@ -208,8 +212,8 @@ function render(ctx: CanvasRenderingContext2D, hover: Hover, keyFlash: Map<numbe
   drawBoard(ctx)
   drawKeyboard(ctx, keyFlash)
 
-  // ghost preview of the creator shape under the cursor
-  if (hover.zone === 'load' && !store.shapeAt(hover.c, hover.r)) {
+  // ghost preview of the creator shape under the cursor (Escape disarms it)
+  if (hover.zone === 'load' && st.creatorArmed && !store.shapeAt(hover.c, hover.r)) {
     const { shapeIndex, rot, color } = st.creator
     const cells = shapeCellsAt(SHAPES[shapeIndex], rot).map(({ c, r }) => ({
       c: c + hover.c,
@@ -371,13 +375,15 @@ function drawKeyboard(ctx: CanvasRenderingContext2D, keyFlash: Map<number, numbe
     }
 
     if (sounding) {
+      // the key becomes the block that hit it: flat fill, NES bevel, no gradient
       const pal = BLOCK_COLORS[sounding]
-      const grad = ctx.createLinearGradient(0, KEY_Y, 0, KEY_Y + KEYBED_H)
-      grad.addColorStop(0, pal.lite)
-      grad.addColorStop(0.35, pal.fill)
-      grad.addColorStop(1, pal.dark)
-      ctx.fillStyle = grad
+      ctx.fillStyle = pal.fill
       ctx.fillRect(x + 1, KEY_Y + press + 1, CELL - 2, KEYBED_H - press - 2)
+      ctx.fillStyle = pal.lite
+      ctx.fillRect(x + 1, KEY_Y + press + 1, CELL - 2, 3)
+      ctx.fillStyle = pal.dark
+      ctx.fillRect(x + 1, KEY_Y + KEYBED_H - 4, CELL - 2, 3)
+      ctx.fillRect(x + CELL - 3, KEY_Y + press + 1, 2, KEYBED_H - press - 2)
       // shadow above the sunk key sells the press
       ctx.fillStyle = 'rgba(0,0,0,0.5)'
       ctx.fillRect(x, KEY_Y, CELL, press)
@@ -387,25 +393,26 @@ function drawKeyboard(ctx: CanvasRenderingContext2D, keyFlash: Map<number, numbe
     ctx.lineWidth = 1
     ctx.strokeRect(x + 0.5, KEY_Y + 0.5, CELL - 1, KEYBED_H - 1)
 
-    // strike burst: white flash on the strike line + pixel sparks that
-    // fly up and fade over ~260ms
+    // strike burst in the note's own color: three chunky 8-bit frames,
+    // square sparks that hop upward and outward, then vanish (no alpha fades)
     const t0 = strikeStart.get(c)
     if (sounding && t0 !== undefined) {
-      const t = (now - t0) / 260
+      const t = (now - t0) / 300
       if (t < 1) {
         const pal = BLOCK_COLORS[sounding]
-        const ease = 1 - (1 - t) * (1 - t)
-        ctx.globalAlpha = 1 - t
-        ctx.fillStyle = '#ffffff'
-        ctx.fillRect(x + 2, KEY_Y - 4, CELL - 4, 3)
-        const offs = [-8, -3, 3, 8]
-        for (let i = 0; i < offs.length; i++) {
-          const px = x + CELL / 2 + offs[i] * (0.6 + ease)
-          const py = KEY_Y - 6 - ease * (10 + (i % 3) * 5)
-          ctx.fillStyle = i % 2 ? pal.lite : '#ffffff'
-          ctx.fillRect(px, py, 3 - (i % 2), 3 - (i % 2))
+        const frame = Math.min(2, Math.floor(t * 3))
+        const rise = [3, 9, 15][frame]
+        const spread = [3, 6, 9][frame]
+        const size = [4, 3, 2][frame]
+        if (frame < 2) {
+          ctx.fillStyle = pal.lite
+          ctx.fillRect(x + 2, KEY_Y - 4, CELL - 4, frame === 0 ? 3 : 2)
         }
-        ctx.globalAlpha = 1
+        ctx.fillStyle = frame === 0 ? pal.lite : pal.fill
+        ctx.fillRect(x + CELL / 2 - spread - size, KEY_Y - 4 - rise, size, size)
+        ctx.fillRect(x + CELL / 2 + spread, KEY_Y - 4 - rise, size, size)
+        ctx.fillStyle = pal.fill
+        ctx.fillRect(x + CELL / 2 - 1, KEY_Y - 8 - rise, 3, 3)
       }
     }
 

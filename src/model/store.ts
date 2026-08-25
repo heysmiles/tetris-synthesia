@@ -35,9 +35,9 @@ export interface State {
   columns: ColumnState[]
   selectedShapeId: number | null
   creator: { shapeIndex: number; rot: number; color: ColorId }
+  creatorArmed: boolean // false = Escape pressed, no placement ghost on hover
   score: number
   top: number
-  lines: number // completed loop cycles
   stats: Record<ColorId, number> // shapes placed per color
   volumes: Record<ColorId, number> // 0..1
 }
@@ -60,9 +60,9 @@ function initialState(): State {
     columns: freshColumns(),
     selectedShapeId: null,
     creator: { shapeIndex: 9, rot: 0, color: 'red' }, // vertical 3-bar, red
+    creatorArmed: true,
     score: 0,
     top: Number(localStorage.getItem(TOP_KEY) || 0),
-    lines: 0,
     stats: { red: 0, yellow: 0, blue: 0, green: 0 },
     volumes: { red: 0.9, yellow: 0.9, blue: 0.7, green: 0.7 },
   }
@@ -98,11 +98,11 @@ class Store {
   }
 
   save() {
-    const { shapes, columns, bpm, stats, volumes, score, lines, projectName } = this.state
+    const { shapes, columns, bpm, stats, volumes, score, projectName } = this.state
     localStorage.setItem(
       STORAGE_KEY,
       JSON.stringify({
-        shapes, columns, bpm, stats, volumes, score, lines, projectName, nextId: this.nextId,
+        shapes, columns, bpm, stats, volumes, score, projectName, nextId: this.nextId,
       }),
     )
   }
@@ -137,7 +137,6 @@ class Store {
     if (data.stats) s.stats = { ...s.stats, ...data.stats }
     if (data.volumes) s.volumes = { ...s.volumes, ...data.volumes }
     if (typeof data.score === 'number') s.score = data.score
-    if (typeof data.lines === 'number') s.lines = data.lines
     if (typeof data.projectName === 'string') s.projectName = data.projectName.slice(0, 24)
     if (typeof data.nextId === 'number') this.nextId = data.nextId
     this.emit(false)
@@ -162,7 +161,6 @@ class Store {
 
   setStep(step: number) {
     this.state.step = step
-    if (step === STEPS - 1) this.state.lines++
     this.emit(false)
   }
 
@@ -190,16 +188,25 @@ class Store {
   setCreatorShape(shapeIndex: number) {
     this.state.creator.shapeIndex = shapeIndex
     this.state.creator.rot = 0
+    this.state.creatorArmed = true
     this.emit(false)
   }
 
   rotateCreator() {
     this.state.creator.rot = (this.state.creator.rot + 1) % 4
+    this.state.creatorArmed = true
     this.emit(false)
   }
 
   setCreatorColor(color: ColorId) {
     this.state.creator.color = color
+    this.state.creatorArmed = true
+    this.emit(false)
+  }
+
+  disarmCreator() {
+    this.state.creatorArmed = false
+    this.state.selectedShapeId = null
     this.emit(false)
   }
 
