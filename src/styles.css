@@ -152,12 +152,19 @@ body {
   display: grid;
   grid-template-columns: 225px minmax(0, 680px) 225px;
   gap: 18px;
-  align-items: start;
+  align-items: stretch; /* side columns match the board's full height */
   width: 100%;
   max-width: 1200px;
 }
 
-.side-col { display: flex; flex-direction: column; }
+/* Panels spread so the last one lands at the keyboard's bottom edge */
+.side-col {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  height: 100%;
+}
+.side-col .panel, .side-col .main-btn { margin-bottom: 0; }
 
 .board-frame {
   background: var(--panel-bg);
@@ -169,15 +176,15 @@ body {
   justify-content: center;
 }
 
-/* Scale to fit the viewport height so the piano is never off-screen:
-   the canvas keeps its aspect ratio and shrinks to whichever constraint
-   (column width or viewport height) is tighter. */
+/* Scale to fit the viewport: the canvas fills the column width (upscaling
+   its pixel art on big screens) but never pushes the piano off-screen —
+   when height is the tighter constraint it shrinks, keeping aspect ratio. */
 .seq-canvas {
   display: block;
-  width: auto;
+  /* fill the column, upscaling on big screens, but never taller than the
+     viewport allows; 0.8856 = canvas aspect ratio (650/734) */
+  width: min(100%, calc((100vh - 160px) * 0.8856));
   height: auto;
-  max-width: 100%;
-  max-height: calc(100vh - 150px);
   image-rendering: pixelated;
   cursor: crosshair;
 }

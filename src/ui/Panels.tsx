@@ -214,7 +214,7 @@ export function PresetsPanel() {
             engine.setBpm(store.state.bpm)
           }}
         >
-          ♪ {label}
+          {label}
         </button>
       ))}
     </div>
