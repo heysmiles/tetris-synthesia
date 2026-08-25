@@ -79,3 +79,30 @@ export const CITY_OF_DREAMS: Preset = {
     { color: 'red', cells: [{ c: 12, r: 0 }, { c: 12, r: 1 }] }, // C4, step 14 — resolves, loops
   ],
 }
+
+// FUR ELISE — Beethoven (public domain). The famous opening phrase,
+// transposed down an octave to fit the C3–C5 board: the E–D# trill run
+// falling to A, then the answering arpeggio climbing back into the loop.
+// Solo piano, as written. Columns: E3=4, A3=9, B3=11, C4=12, D4=14,
+// D#4=15, E4=16. All columns rate x1; row = 15 - step.
+export const FUR_ELISE: Preset = {
+  name: 'FUR ELISE',
+  bpm: 90,
+  rates: {},
+  shapes: [
+    { color: 'red', cells: [{ c: 16, r: 15 }] }, // E4  step 0
+    { color: 'red', cells: [{ c: 15, r: 14 }] }, // D#4 step 1
+    { color: 'red', cells: [{ c: 16, r: 13 }] }, // E4  step 2
+    { color: 'red', cells: [{ c: 15, r: 12 }] }, // D#4 step 3
+    { color: 'red', cells: [{ c: 16, r: 11 }] }, // E4  step 4
+    { color: 'red', cells: [{ c: 11, r: 10 }] }, // B3  step 5
+    { color: 'red', cells: [{ c: 14, r: 9 }] }, // D4  step 6
+    { color: 'red', cells: [{ c: 12, r: 8 }] }, // C4  step 7
+    { color: 'red', cells: [{ c: 9, r: 6 }, { c: 9, r: 7 }] }, // A3 step 8, held
+    // answering arpeggio, climbing home
+    { color: 'red', cells: [{ c: 4, r: 4 }] }, // E3  step 11
+    { color: 'red', cells: [{ c: 9, r: 3 }] }, // A3  step 12
+    { color: 'red', cells: [{ c: 12, r: 2 }] }, // C4  step 13
+    { color: 'red', cells: [{ c: 16, r: 1 }] }, // E4  step 14 — leads the loop back
+  ],
+}
