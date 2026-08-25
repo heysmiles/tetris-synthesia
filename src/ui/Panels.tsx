@@ -17,7 +17,35 @@ export function ProjectTitle({ name }: { name: string }) {
       placeholder="NAME YOUR JAM"
       spellCheck={false}
       onChange={(e) => store.setProjectName(e.target.value)}
+      onKeyDown={(e) => {
+        if (e.key === 'Enter' || e.key === 'Escape') e.currentTarget.blur()
+      }}
     />
+  )
+}
+
+const CONTROLS: [string, string][] = [
+  ['SPACE', 'PLAY / PAUSE'],
+  ['ENTER', 'COMMIT'],
+  ['↑', 'ROTATE'],
+  ['Q / E', 'SHAPE'],
+  ['1-4', 'COLOR'],
+  ['←↓→', 'MOVE'],
+  ['R-CLICK', 'DELETE'],
+  ['DEL', 'DELETE'],
+]
+
+export function ControlsPanel() {
+  return (
+    <div className="panel">
+      <div className="panel-label">CONTROLS</div>
+      {CONTROLS.map(([key, action]) => (
+        <div key={key + action} className="control-row">
+          <span className="control-key">{key}</span>
+          <span className="control-action">{action}</span>
+        </div>
+      ))}
+    </div>
   )
 }
 

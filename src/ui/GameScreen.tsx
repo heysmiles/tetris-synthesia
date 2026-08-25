@@ -1,6 +1,7 @@
 import { SequencerCanvas } from './SequencerCanvas'
 import {
   ProjectTitle, ScorePanel, StatsPanel, NextPanel, LevelPanel, TransportPanel, MixerPanel,
+  ControlsPanel,
 } from './Panels'
 import { store } from '../model/store'
 
@@ -13,14 +14,12 @@ export function GameScreen() {
           <div className="panel mode-panel">B-TYPE</div>
           <StatsPanel stats={st.stats} />
           <MixerPanel volumes={st.volumes} />
+          <ControlsPanel />
         </div>
         <div className="center-col">
           <ProjectTitle name={st.projectName} />
           <div className="board-frame">
             <SequencerCanvas />
-          </div>
-          <div className="hint keys-hint">
-            SPACE PLAY · ENTER COMMIT · ↑ ROTATE · Q/E SHAPE · 1-4 COLOR · R-CLICK DELETE
           </div>
         </div>
         <div className="side-col">

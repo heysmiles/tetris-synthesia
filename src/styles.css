@@ -120,7 +120,15 @@ body {
 .color-btn.on { outline: 3px solid #fff; }
 
 .hint { font-size: 8px; color: #666; margin-top: 8px; text-align: center; line-height: 1.8; }
-.keys-hint { color: #6858a8; margin-top: 10px; }
+
+.control-row {
+  display: flex;
+  justify-content: space-between;
+  gap: 8px;
+  margin-top: 8px;
+}
+.control-key { font-size: 8px; color: var(--accent); white-space: nowrap; }
+.control-action { font-size: 8px; color: #ccc; text-align: right; }
 
 .mixer-row { display: flex; align-items: center; gap: 6px; margin-top: 10px; }
 .mixer-row input[type='range'] { flex: 1; accent-color: #b02020; height: 14px; }
