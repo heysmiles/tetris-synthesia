@@ -56,7 +56,12 @@ body {
   color: #fff;
   width: 100%;
   cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
 }
+.main-arrow { font-size: 10px; line-height: 1; }
 .main-btn:hover { background: #1a1a2e; border-color: var(--accent); }
 
 .title-input {

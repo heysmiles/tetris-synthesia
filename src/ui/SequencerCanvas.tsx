@@ -355,6 +355,7 @@ function drawKeyboard(ctx: CanvasRenderingContext2D, keyFlash: Map<number, numbe
   const st = store.state
   const now = performance.now()
   const showDrumLabels = st.creator.color === 'yellow'
+  const freshStrikes: number[] = [] // columns struck within the last ~160ms
 
   for (let c = 0; c < COLS; c++) {
     const black = BLACK_PC.has(c % 12)
@@ -406,6 +407,7 @@ function drawKeyboard(ctx: CanvasRenderingContext2D, keyFlash: Map<number, numbe
     // strike burst in the note's own color: three chunky 8-bit frames,
     // square sparks that hop upward and outward, then vanish (no alpha fades)
     const t0 = strikeStart.get(c)
+    if (sounding && t0 !== undefined && now - t0 < 160) freshStrikes.push(c)
     if (sounding && t0 !== undefined) {
       const t = (now - t0) / 300
       if (t < 1) {
@@ -435,6 +437,21 @@ function drawKeyboard(ctx: CanvasRenderingContext2D, keyFlash: Map<number, numbe
       for (let i = 0; i < abbrev.length; i++) {
         ctx.fillText(abbrev[i], x + CELL / 2, KEY_Y + 14 + i * 10)
       }
+    }
+  }
+
+  // chord shine: when a line of blocks lands on 2+ keys at once, each hit
+  // gets an extra white Synthesia-style starburst so chords read brighter
+  if (freshStrikes.length >= 2) {
+    ctx.fillStyle = '#ffffff'
+    for (const c of freshStrikes) {
+      const cx = c * CELL + CELL / 2
+      ctx.fillRect(cx - 2, KEY_Y - 9, 4, 4) // core
+      ctx.fillRect(cx - 1, KEY_Y - 15, 2, 4) // up ray
+      ctx.fillRect(cx - 1, KEY_Y - 3, 2, 3) // down ray onto the key
+      ctx.fillRect(cx - 9, KEY_Y - 8, 5, 2) // left ray
+      ctx.fillRect(cx + 4, KEY_Y - 8, 5, 2) // right ray
+      ctx.fillRect(c * CELL + 3, KEY_Y + 4, CELL - 6, 2) // gleam on the keytop
     }
   }
 }

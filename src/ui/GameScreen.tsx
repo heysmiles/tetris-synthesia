@@ -19,7 +19,8 @@ export function GameScreen() {
               store.setScreen('title')
             }}
           >
-            ◀ MAIN
+            <span className="main-arrow">◀</span>
+            <span>MAIN</span>
           </button>
           <StatsPanel stats={st.stats} />
           <MixerPanel volumes={st.volumes} />
