@@ -1,7 +1,7 @@
 import { SequencerCanvas } from './SequencerCanvas'
 import {
   ProjectTitle, ScorePanel, StatsPanel, NextPanel, LevelPanel, TransportPanel, MixerPanel,
-  ControlsPanel,
+  ControlsPanel, PresetsPanel,
 } from './Panels'
 import { store } from '../model/store'
 import * as engine from '../audio/engine'
@@ -35,6 +35,7 @@ export function GameScreen() {
         <div className="side-col">
           <ScorePanel top={st.top} score={st.score} />
           <NextPanel />
+          <PresetsPanel />
           <TransportPanel playing={st.playing} />
         </div>
       </div>

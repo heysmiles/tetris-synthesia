@@ -184,17 +184,6 @@ export function TransportPanel({ playing }: { playing: boolean }) {
       <button className="pix-btn wide" onClick={() => store.commitAllStaged()}>
         COMMIT EDITS
       </button>
-      <button
-        className="pix-btn wide"
-        onClick={() => {
-          if (!confirm('Load the KOROBEINIKI preset? This replaces your current loop (SAVE it first if you want to keep it).')) return
-          engine.unlock()
-          store.applyPreset(KOROBEINIKI)
-          engine.setBpm(store.state.bpm)
-        }}
-      >
-        ♪ THEME A
-      </button>
       <button className="pix-btn wide" onClick={onExport}>SAVE</button>
       <button className="pix-btn wide" onClick={() => fileRef.current?.click()}>LOAD</button>
       <button
@@ -204,6 +193,30 @@ export function TransportPanel({ playing }: { playing: boolean }) {
         CLEAR
       </button>
       <input ref={fileRef} type="file" accept=".json" hidden onChange={onImport} />
+    </div>
+  )
+}
+
+const PRESETS = [{ label: 'TETRIS THEME', preset: KOROBEINIKI }]
+
+export function PresetsPanel() {
+  return (
+    <div className="panel">
+      <div className="panel-label">PRESETS</div>
+      {PRESETS.map(({ label, preset }) => (
+        <button
+          key={label}
+          className="pix-btn wide"
+          onClick={() => {
+            if (!confirm(`Load the ${label} preset? This replaces your current loop (SAVE it first if you want to keep it).`)) return
+            engine.unlock()
+            store.applyPreset(preset)
+            engine.setBpm(store.state.bpm)
+          }}
+        >
+          ♪ {label}
+        </button>
+      ))}
     </div>
   )
 }

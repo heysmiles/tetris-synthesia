@@ -304,14 +304,21 @@ class Store {
     this.emit()
   }
 
-  // Enter: (re)commit every column that has staged cells — the "join the loop" action.
+  // Enter / COMMIT EDITS: full sync of the loading zone into the loop.
+  // Columns with staged cells are (re)compiled and activated; columns whose
+  // blocks were deleted are dropped from the flow.
   commitAllStaged() {
     const colsWithCells = new Set<number>()
     for (const s of this.state.shapes) for (const cell of s.cells) colsWithCells.add(cell.c)
-    for (const c of colsWithCells) {
+    for (let c = 0; c < COLS; c++) {
       const col = this.state.columns[c]
-      col.notes = this.compileColumn(c)
-      col.active = col.notes.length > 0
+      if (colsWithCells.has(c)) {
+        col.notes = this.compileColumn(c)
+        col.active = col.notes.length > 0
+      } else {
+        col.notes = []
+        col.active = false
+      }
     }
     this.emit()
   }
