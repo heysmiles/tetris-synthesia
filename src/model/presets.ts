@@ -91,23 +91,23 @@ export const NIGHT_SWIM: Preset = {
     17: 2, // closed hats on the offbeat eighths
   },
   shapes: [
-    // ---- pads (green): Fmaj7 -> Em7 wash ----
-    { color: 'green', cells: Array.from({ length: 8 }, (_, i) => ({ c: 5, r: 8 + i })) }, // F3, steps 0-7
-    { color: 'green', cells: Array.from({ length: 8 }, (_, i) => ({ c: 4, r: i })) }, // E3, steps 8-15
-    // ---- piano (red): syncopated chord stabs ----
-    { color: 'red', cells: [{ c: 9, r: 14 }, { c: 9, r: 15 }] }, // A3 } Fmaj7 stab,
-    { color: 'red', cells: [{ c: 12, r: 14 }, { c: 12, r: 15 }] }, // C4 } step 0
-    { color: 'red', cells: [{ c: 16, r: 14 }, { c: 16, r: 15 }] }, // E4 } held
-    { color: 'red', cells: [{ c: 7, r: 8 }, { c: 7, r: 9 }] }, // G3 } Em7 push,
-    { color: 'red', cells: [{ c: 11, r: 8 }, { c: 11, r: 9 }] }, // B3 } step 6
-    { color: 'red', cells: [{ c: 14, r: 8 }, { c: 14, r: 9 }] }, // D4 } (anticipated)
-    { color: 'red', cells: [{ c: 11, r: 2 }, { c: 11, r: 3 }] }, // B3 } soft echo,
-    { color: 'red', cells: [{ c: 14, r: 2 }, { c: 14, r: 3 }] }, // D4 } step 12
-    // ---- synth (blue): sparse falsetto line ----
-    { color: 'blue', cells: [{ c: 21, r: 10 }, { c: 21, r: 11 }] }, // A4, step 4 (held lean)
-    { color: 'blue', cells: [{ c: 19, r: 7 }] }, // G4, step 8
-    { color: 'blue', cells: [{ c: 16, r: 5 }, { c: 16, r: 6 }] }, // E4, step 9 (sigh)
-    { color: 'blue', cells: [{ c: 19, r: 1 }] }, // G4, step 14 — pickup into the loop
+    // ---- pads (green): full Fmaj7 -> Em7 chords, four voices each ----
+    { color: 'green', cells: Array.from({ length: 8 }, (_, i) => ({ c: 5, r: 8 + i })) }, // F3 } Fmaj7,
+    { color: 'green', cells: Array.from({ length: 8 }, (_, i) => ({ c: 9, r: 8 + i })) }, // A3 } steps
+    { color: 'green', cells: Array.from({ length: 8 }, (_, i) => ({ c: 12, r: 8 + i })) }, // C4 } 0-7
+    { color: 'green', cells: Array.from({ length: 8 }, (_, i) => ({ c: 16, r: 8 + i })) }, // E4 }
+    { color: 'green', cells: Array.from({ length: 8 }, (_, i) => ({ c: 4, r: i })) }, // E3 } Em7,
+    { color: 'green', cells: Array.from({ length: 8 }, (_, i) => ({ c: 7, r: i })) }, // G3 } steps
+    { color: 'green', cells: Array.from({ length: 8 }, (_, i) => ({ c: 11, r: i })) }, // B3 } 8-15
+    { color: 'green', cells: Array.from({ length: 8 }, (_, i) => ({ c: 14, r: i })) }, // D4 }
+    // ---- piano (red): one gentle descending line with 9th colors ----
+    { color: 'red', cells: [{ c: 19, r: 11 }, { c: 19, r: 12 }] }, // G4, step 3 (9th over F, held)
+    { color: 'red', cells: [{ c: 21, r: 9 }] }, // A4, step 6 (3rd, pushes to Em)
+    { color: 'red', cells: [{ c: 19, r: 7 }] }, // G4, step 8 (lands with the snare)
+    { color: 'red', cells: [{ c: 18, r: 4 }, { c: 18, r: 5 }] }, // F#4, step 10 (9th over Em, held)
+    { color: 'red', cells: [{ c: 16, r: 1 }, { c: 16, r: 2 }] }, // E4, step 13 (rests home)
+    // ---- synth (blue): one held note, way back in the mix ----
+    { color: 'blue', cells: [{ c: 23, r: 1 }, { c: 23, r: 2 }, { c: 23, r: 3 }] }, // B4, step 12
     // ---- drums (yellow): minimal and behind the beat ----
     { color: 'yellow', cells: [{ c: 0, r: 15 }] }, // kick, step 0
     { color: 'yellow', cells: [{ c: 0, r: 5 }] }, // kick, step 10 (lazy second hit)
