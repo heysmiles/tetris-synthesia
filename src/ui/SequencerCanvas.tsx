@@ -35,7 +35,7 @@ export function SequencerCanvas() {
 
   useEffect(() => {
     const onKey = (e: KeyboardEvent) => {
-      if (store.state.screen !== 'jam' || store.state.showTutorial) return
+      if (store.state.screen !== 'jam') return
       // don't steal keys while the user is typing (e.g. the project-name field)
       if (e.target instanceof HTMLInputElement || e.target instanceof HTMLTextAreaElement) return
       const sel = store.state.selectedShapeId
