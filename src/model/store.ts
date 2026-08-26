@@ -28,6 +28,7 @@ export type Screen = 'title' | 'jam' | 'credits'
 export interface State {
   screen: Screen
   projectName: string
+  showTutorial: boolean
   playing: boolean
   step: number // current global step 0..15
   bpm: number
@@ -53,6 +54,7 @@ function initialState(): State {
   return {
     screen: 'title',
     projectName: '',
+    showTutorial: false,
     playing: false,
     step: 0,
     bpm: DEFAULT_BPM,
@@ -151,6 +153,17 @@ class Store {
 
   setScreen(screen: Screen) {
     this.state.screen = screen
+    this.emit(false)
+  }
+
+  openTutorial() {
+    this.state.showTutorial = true
+    this.emit(false)
+  }
+
+  closeTutorial() {
+    this.state.showTutorial = false
+    localStorage.setItem('tetris-synthesia-tutorial-seen', '1')
     this.emit(false)
   }
 

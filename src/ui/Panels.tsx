@@ -186,6 +186,7 @@ export function TransportPanel({ playing }: { playing: boolean }) {
       </button>
       <button className="pix-btn wide" onClick={onExport}>SAVE</button>
       <button className="pix-btn wide" onClick={() => fileRef.current?.click()}>LOAD</button>
+      <button className="pix-btn wide" onClick={() => store.openTutorial()}>HELP</button>
       <button
         className="pix-btn wide danger"
         onClick={() => { if (confirm('Clear all blocks and loops?')) store.clearAll() }}
