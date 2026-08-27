@@ -237,12 +237,37 @@ body {
   height: auto;
   image-rendering: pixelated;
   cursor: crosshair;
+  touch-action: manipulation; /* taps place blocks; no double-tap zoom */
 }
 
+/* touch-device extras (rotate / erase buttons) */
+.touch-only { display: none; }
+@media (pointer: coarse) {
+  .touch-only { display: flex; }
+}
+
+/* ---- mobile / narrow layout: board first, single column ---- */
 @media (max-width: 1080px) {
-  .game-grid { grid-template-columns: 1fr; max-width: 700px; }
-  .side-col { flex-direction: row; flex-wrap: wrap; gap: 10px; }
-  .side-col .panel { flex: 1 1 150px; }
+  .game-frame { padding: 10px 10px 28px; }
+  .game-grid {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    max-width: 700px;
+    margin: 0 auto;
+  }
+  .center-col { order: 0; }
+  .side-col { order: 1; gap: 12px; }
+  .side-col:first-child { order: 2; } /* stats/mixer/level below the creator+transport */
+  .pix-btn { padding: 10px 12px; font-size: 10px; }
+  .pix-btn.wide { padding: 12px; }
+  .color-btn { width: 32px; height: 32px; }
+  .title-input { font-size: 12px; padding: 10px 8px; }
+}
+
+/* keyboard-shortcut list means nothing on a touch screen */
+@media (max-width: 1080px) and (pointer: coarse) {
+  .controls-panel { display: none; }
 }
 
 /* ---- title screen ---- */
@@ -332,6 +357,13 @@ body {
   font-size: 7px;
   color: #3a3a5a;
   letter-spacing: 1px;
+}
+
+@media (max-width: 600px) {
+  .logo-box { padding: 20px 14px 16px; }
+  .logo-main { font-size: 34px; letter-spacing: 3px; }
+  .logo-sub { font-size: 13px; letter-spacing: 7px; }
+  .title-tagline { font-size: 8px; padding: 0 12px; text-align: center; }
 }
 
 .credits-body {

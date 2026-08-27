@@ -148,6 +148,13 @@ export function SequencerCanvas() {
         break
       case 'load': {
         const existing = store.shapeAt(h.c, h.r)
+        if (store.state.eraseMode) {
+          if (existing) {
+            store.deleteShape(existing.id)
+            engine.blip(440)
+          }
+          break
+        }
         if (existing) {
           if (rightClick) {
             store.deleteShape(existing.id)
@@ -213,7 +220,8 @@ function render(ctx: CanvasRenderingContext2D, hover: Hover, keyFlash: Map<numbe
   drawKeyboard(ctx, keyFlash)
 
   // ghost preview of the creator shape under the cursor (Escape disarms it)
-  if (hover.zone === 'load' && st.creatorArmed && !store.shapeAt(hover.c, hover.r)) {
+  if (hover.zone === 'load' && st.creatorArmed && !st.eraseMode &&
+      !store.shapeAt(hover.c, hover.r)) {
     const { shapeIndex, rot, color } = st.creator
     const cells = shapeCellsAt(SHAPES[shapeIndex], rot).map(({ c, r }) => ({
       c: c + hover.c,

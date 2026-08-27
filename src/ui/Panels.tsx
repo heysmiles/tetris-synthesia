@@ -37,7 +37,7 @@ const CONTROLS: [string, string][] = [
 
 export function ControlsPanel() {
   return (
-    <div className="panel">
+    <div className="panel controls-panel">
       <div className="panel-label">CONTROLS</div>
       {CONTROLS.map(([key, action]) => (
         <div key={key + action} className="control-row">
@@ -121,6 +121,20 @@ export function NextPanel() {
         ))}
       </div>
       <div className="hint">{INSTRUMENT_NAME[creator.color]}</div>
+      <div className="shape-buttons touch-only">
+        <button
+          className="pix-btn"
+          onClick={() => { store.rotateCreator(); engine.blip(1200) }}
+        >
+          ↻ ROTATE
+        </button>
+        <button
+          className={`pix-btn ${store.state.eraseMode ? 'on' : ''}`}
+          onClick={() => { store.toggleEraseMode(); engine.blip(520) }}
+        >
+          ✖ ERASE
+        </button>
+      </div>
     </div>
   )
 }

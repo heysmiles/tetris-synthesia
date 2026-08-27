@@ -36,6 +36,7 @@ export interface State {
   selectedShapeId: number | null
   creator: { shapeIndex: number; rot: number; color: ColorId }
   creatorArmed: boolean // false = Escape pressed, no placement ghost on hover
+  eraseMode: boolean // touch-device alternative to right-click delete
   score: number
   top: number
   stats: Record<ColorId, number> // shapes placed per color
@@ -61,6 +62,7 @@ function initialState(): State {
     selectedShapeId: null,
     creator: { shapeIndex: 9, rot: 0, color: 'red' }, // vertical 3-bar, red
     creatorArmed: true,
+    eraseMode: false,
     score: 0,
     top: Number(localStorage.getItem(TOP_KEY) || 0),
     stats: { red: 0, yellow: 0, blue: 0, green: 0 },
@@ -207,6 +209,11 @@ class Store {
   disarmCreator() {
     this.state.creatorArmed = false
     this.state.selectedShapeId = null
+    this.emit(false)
+  }
+
+  toggleEraseMode() {
+    this.state.eraseMode = !this.state.eraseMode
     this.emit(false)
   }
 
