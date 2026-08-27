@@ -161,6 +161,53 @@ body {
   align-items: start;
   width: 100%;
   max-width: 1200px;
+  position: relative; /* anchor for the first-visit onboarding hints */
+}
+
+/* ---- first-visit onboarding hints (right of the panels) ---- */
+
+.onboard-hints {
+  position: absolute;
+  left: calc(100% + 16px);
+  top: 0;
+  bottom: 0;
+  width: 220px;
+}
+
+.hint-step {
+  position: absolute;
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+}
+
+.hint-arrow { flex-shrink: 0; margin-top: 4px; }
+
+.hint-text {
+  font-size: 8px;
+  line-height: 2;
+  color: #fff;
+  letter-spacing: 1px;
+}
+
+.hint-num { color: var(--accent); }
+
+.hint-dismiss {
+  position: absolute;
+  top: 210px;
+  left: 0;
+  font-family: 'Press Start 2P', monospace;
+  font-size: 8px;
+  color: #555;
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 4px;
+}
+.hint-dismiss:hover { color: #fff; }
+
+@media (max-width: 1080px) {
+  .onboard-hints { display: none; }
 }
 
 /* Panels stack from the top and end above the keyboard */
