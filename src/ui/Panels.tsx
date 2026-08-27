@@ -51,7 +51,7 @@ export function ControlsPanel() {
 
 export function ScorePanel({ top, score }: { top: number; score: number }) {
   return (
-    <div className="panel">
+    <div className="panel score-panel">
       <div className="panel-label">TOP</div>
       <div className="panel-value">{pad(top, 6)}</div>
       <div className="panel-label" style={{ marginTop: 10 }}>SCORE</div>
@@ -62,7 +62,7 @@ export function ScorePanel({ top, score }: { top: number; score: number }) {
 
 export function StatsPanel({ stats }: { stats: Record<ColorId, number> }) {
   return (
-    <div className="panel">
+    <div className="panel stats-panel">
       <div className="panel-label">STATISTICS</div>
       {COLOR_IDS.map((c) => (
         <div key={c} className="stat-row">
@@ -147,7 +147,7 @@ export function LevelPanel({ bpm }: { bpm: number }) {
     engine.blip(1000)
   }
   return (
-    <div className="panel">
+    <div className="panel level-panel">
       <div className="panel-label">LEVEL</div>
       <div className="panel-value">{bpm}</div>
       <div className="panel-label" style={{ fontSize: 7 }}>BPM</div>
@@ -191,7 +191,7 @@ export function TransportPanel({ playing }: { playing: boolean }) {
   }
 
   return (
-    <div className="panel">
+    <div className="panel transport-panel">
       <button id="btn-play" className={`pix-btn wide ${playing ? 'on' : ''}`} onClick={onToggle}>
         {playing ? '❚❚ PAUSE' : '▶ PLAY'}
       </button>
@@ -219,7 +219,7 @@ const PRESETS = [
 
 export function PresetsPanel() {
   return (
-    <div className="panel">
+    <div className="panel presets-panel">
       <div className="panel-label">PRESETS</div>
       {PRESETS.map(({ label, preset }) => (
         <button
@@ -241,7 +241,7 @@ export function PresetsPanel() {
 
 export function MixerPanel({ volumes }: { volumes: Record<ColorId, number> }) {
   return (
-    <div className="panel">
+    <div className="panel mixer-panel">
       <div className="panel-label">MIXER</div>
       {COLOR_IDS.map((c) => (
         <div key={c} className="mixer-row">
