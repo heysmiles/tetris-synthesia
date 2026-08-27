@@ -84,7 +84,7 @@ export function NextPanel() {
   const pal = BLOCK_COLORS[creator.color]
 
   return (
-    <div className="panel">
+    <div className="panel" id="panel-next">
       <div className="panel-label">NEXT</div>
       <div className="next-grid" style={{ width: maxC * 18, height: maxR * 18 }}>
         {cells.map((cell, i) => (
@@ -178,10 +178,10 @@ export function TransportPanel({ playing }: { playing: boolean }) {
 
   return (
     <div className="panel">
-      <button className={`pix-btn wide ${playing ? 'on' : ''}`} onClick={onToggle}>
+      <button id="btn-play" className={`pix-btn wide ${playing ? 'on' : ''}`} onClick={onToggle}>
         {playing ? '❚❚ PAUSE' : '▶ PLAY'}
       </button>
-      <button className="pix-btn wide" onClick={() => store.commitAllStaged()}>
+      <button id="btn-commit" className="pix-btn wide" onClick={() => store.commitAllStaged()}>
         COMMIT EDITS
       </button>
       <button className="pix-btn wide" onClick={onExport}>SAVE</button>
