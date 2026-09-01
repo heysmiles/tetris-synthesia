@@ -240,6 +240,17 @@ body {
   touch-action: manipulation; /* taps place blocks; no double-tap zoom */
 }
 
+/* mobile-only banner above everything */
+.mobile-note {
+  display: none;
+  font-size: 8px;
+  color: #6858a8;
+  text-align: center;
+  letter-spacing: 1px;
+  line-height: 1.8;
+  padding: 2px 0 0;
+}
+
 /* touch-device extras (rotate / erase buttons) */
 .touch-only { display: none; }
 @media (pointer: coarse) {
@@ -260,6 +271,7 @@ body {
     margin: 0 auto;
   }
   .side-col { display: contents; } /* flatten so panels order individually */
+  .mobile-note { display: block; order: -1; }
   #panel-next { order: 0; }
   .presets-panel { order: 1; }
   .center-col { order: 2; }
@@ -274,6 +286,17 @@ body {
   .pix-btn.wide { padding: 12px; }
   .color-btn { width: 32px; height: 32px; }
   .title-input { font-size: 12px; padding: 10px 8px; }
+  /* preset buttons side by side in one row */
+  .presets-panel { display: flex; flex-wrap: wrap; gap: 8px; }
+  .presets-panel .panel-label { flex-basis: 100%; }
+  .presets-panel .pix-btn.wide {
+    flex: 1 1 0;
+    width: auto;
+    margin-top: 0;
+    font-size: 7px;
+    padding: 12px 2px;
+    white-space: nowrap;
+  }
 }
 
 /* keyboard-shortcut list means nothing on a touch screen */

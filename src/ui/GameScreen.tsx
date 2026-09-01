@@ -152,6 +152,7 @@ export function GameScreen() {
   return (
     <div className="game-frame" ref={frameRef}>
       <div className="game-grid">
+        <div className="mobile-note">VIEW IN DESKTOP FOR FULL EXPERIENCE</div>
         <div className="side-col">
           <button
             className="panel mode-panel main-btn"
