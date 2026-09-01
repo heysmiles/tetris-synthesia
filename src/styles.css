@@ -243,12 +243,12 @@ body {
 /* mobile-only banner above everything */
 .mobile-note {
   display: none;
-  font-size: 8px;
-  color: #6858a8;
+  font-size: 11px;
+  color: #8878c8;
   text-align: center;
   letter-spacing: 1px;
   line-height: 1.8;
-  padding: 2px 0 0;
+  padding: 4px 0 2px;
 }
 
 /* touch-device extras (rotate / erase buttons) */
@@ -273,10 +273,13 @@ body {
   .side-col { display: contents; } /* flatten so panels order individually */
   .mobile-note { display: block; order: -1; }
   #panel-next { order: 0; }
-  .presets-panel { order: 1; }
-  .center-col { order: 2; }
+  .center-col { order: 1; }
+  .presets-panel { order: 2; }
   .transport-panel { order: 3; }
   .score-panel { order: 4; }
+  /* center everything inside the NEXT box */
+  #panel-next .panel-label { text-align: center; }
+  #panel-next .shape-buttons { justify-content: center; }
   .stats-panel { order: 5; }
   .mixer-panel { order: 6; }
   .level-panel { order: 7; }
