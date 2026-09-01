@@ -261,9 +261,9 @@ body {
   }
   .side-col { display: contents; } /* flatten so panels order individually */
   #panel-next { order: 0; }
-  .transport-panel { order: 1; }
-  .presets-panel { order: 2; }
-  .center-col { order: 3; }
+  .presets-panel { order: 1; }
+  .center-col { order: 2; }
+  .transport-panel { order: 3; }
   .score-panel { order: 4; }
   .stats-panel { order: 5; }
   .mixer-panel { order: 6; }
